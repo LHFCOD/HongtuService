@@ -18,6 +18,10 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-logging</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
@@ -56,6 +60,7 @@
             <artifactId>lettuce</artifactId>
             <version>4.4.5.Final</version>
         </dependency>
+
     </dependencies>
     <profiles>
         <profile>
@@ -65,10 +70,6 @@
             </activation>
             <properties>
                 <profiles.active>test</profiles.active>
-                <log4j.level>info</log4j.level>
-                <log4j.appender>service</log4j.appender>
-                <log4j.path>/root/log/HongtuService</log4j.path>
-                <memory.size>2048</memory.size>
             </properties>
         </profile>
         <profile>

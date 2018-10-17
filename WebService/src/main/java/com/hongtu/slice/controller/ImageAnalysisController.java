@@ -11,8 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class ImageAnalysisController {
-    private static Logger LOGGER = LoggerFactory.getLogger(ImageAnalysisController.class);
-
+    private Logger LOGGER = LoggerFactory.getLogger(ImageAnalysisController.class);
     @ResponseBody
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     String add(@RequestBody Add param) {
