@@ -13,7 +13,6 @@ import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = App.class)
-@ActiveProfiles("ht1")
 public class SliceMapperTest {
     @Autowired
     private SliceMapper sliceMapper;
