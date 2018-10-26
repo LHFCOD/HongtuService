@@ -1,0 +1,10 @@
+server:
+  port: 7070
+logging:
+  config: 'classpath:logback.xml'
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://59.110.215.223:3306/slice?setUnicode=true&characterEncoding=utf8
+    username: client
+    password: Abc123456
