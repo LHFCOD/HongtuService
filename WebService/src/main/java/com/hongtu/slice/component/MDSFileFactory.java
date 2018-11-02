@@ -19,8 +19,8 @@ public class MDSFileFactory {
     private Logger LOGGER = LoggerFactory.getLogger(MDSFileFactory.class);
     private final String SETTINGS_PROPERTIES = "settings.properties";
     private Properties props;
-    private GuanvaCacheGetter guanvaCacheGetter;
-
+    private GuanvaCacheGetter mdsFileCache;
+    private GuanvaCacheGetter sliceCache;
     public void initConfig() {
         props = new Properties();
         try {
@@ -32,12 +32,12 @@ public class MDSFileFactory {
 
     public MDSFile generateMDSFile(String fileName) {
         MDSFile mdsFile = null;
-        if (guanvaCacheGetter != null)
-            mdsFile = (MDSFile) guanvaCacheGetter.get(fileName);
+        if (mdsFileCache != null)
+            mdsFile = (MDSFile) mdsFileCache.get(fileName);
         if (mdsFile == null) {
             mdsFile = new MDSFile(props);
             mdsFile.init(fileName);
-            guanvaCacheGetter.set(fileName, mdsFile);
+            mdsFileCache.set(fileName, mdsFile);
         }
         return mdsFile;
     }
@@ -45,14 +45,14 @@ public class MDSFileFactory {
     public byte[] getTileData(SlicePositionParameter SlicePositionParameter) {
         byte[] data = null;
         HashCode code = Hashing.md5().hashString(SlicePositionParameter.toString(), Charset.defaultCharset());
-        if (guanvaCacheGetter != null) {
-            data = (byte[]) guanvaCacheGetter.get(code);
+        if (sliceCache != null) {
+            data = (byte[]) sliceCache.get(code);
             if (data == null) {
                 MDSFile mdsFile = generateMDSFile(SlicePositionParameter.getPath());
                 if (mdsFile != null) {
                     data = mdsFile.getTileData(SlicePositionParameter.getLevel(), SlicePositionParameter.getX(), SlicePositionParameter.getY());
                     if (data != null) {
-                        guanvaCacheGetter.set(code, data);
+                        sliceCache.set(code, data);
                     }
                 }
             }
@@ -62,6 +62,7 @@ public class MDSFileFactory {
 
     public MDSFileFactory() {
         initConfig();
-        guanvaCacheGetter = new GuanvaCacheGetter(props);
+        mdsFileCache = new GuanvaCacheGetter(props);
+        sliceCache = new GuanvaCacheGetter(props);
     }
 }
