@@ -1,4 +1,4 @@
-package com.hongtu.slice.util;
+package com.hongtu.slice.poi;
 
 import com.google.common.base.Throwables;
 import org.apache.poi.poifs.filesystem.*;
@@ -6,14 +6,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.util.List;
 
 public class ComDocIO {
     private Logger LOGGER = LoggerFactory.getLogger(ComDocIO.class);
     private POIFSFileSystem fs;
     DirectoryEntry root;
 
-    byte[] readFromPath(String path) {
+    public byte[] readFromPath(String path) {
         byte[] content = new byte[0];
         String[] path_list = path.substring(1).split("/");
         try {

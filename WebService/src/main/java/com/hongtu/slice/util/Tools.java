@@ -20,7 +20,7 @@ public class Tools {
             MDSFileFactory mdsFileFactory = new MDSFileFactory();
             StopWatch sw = new StopWatch();
             sw.start();
-            SlicePositionParameter slicePositionParameter=new SlicePositionParameter(littleMDS,14,0,0);
+            SlicePositionParameter slicePositionParameter=new SlicePositionParameter(largeMDS,14,0,0);
             for (int i = 0; i < 1000; i++) {
                 byte[] data = mdsFileFactory.getTileData(slicePositionParameter);
             }

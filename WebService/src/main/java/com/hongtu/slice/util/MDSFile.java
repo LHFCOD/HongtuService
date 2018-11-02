@@ -18,6 +18,9 @@ import java.util.Map;
 import java.util.Properties;
 import java.awt.image.BufferedImage;
 
+//import com.hongtu.slice.poi.ComDocIO;
+import com.hongtu.slice.cplus.ComDocIO;
+
 public class MDSFile {
     private Logger LOGGER = LoggerFactory.getLogger(MDSFile.class);
     private String xml_path;
