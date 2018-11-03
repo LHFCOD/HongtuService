@@ -10,12 +10,6 @@
     <appender name="SYS_INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <File>./logs/info.log</File>
         <append>true</append>
-        <!--过滤器,只打INFO级别的日志-->
-        <filter class="ch.qos.logback.classic.filter.LevelFilter">
-            <level>INFO</level>
-            <onMatch>ACCEPT</onMatch>
-            <onMismatch>DENY</onMismatch>
-        </filter>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>./logs/info.log.%d{yyyy-MM-dd}</fileNamePattern>
             <maxHistory>30</maxHistory>

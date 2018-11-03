@@ -3,6 +3,7 @@ package com.hongtu.slice.controller;
 import com.google.common.base.Throwables;
 import com.hongtu.slice.component.MDSFileFactory;
 import com.hongtu.slice.util.Add;
+import com.hongtu.slice.util.MDSInfo;
 import com.hongtu.slice.util.SlicePositionParameter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,5 +30,12 @@ public class ImageAnalysisController {
     byte[] getTileData(@RequestBody SlicePositionParameter slicePositionParameter) {
         LOGGER.info("request handleSlicePositionParameter service: request:{}", slicePositionParameter.toString());
         return mdsFileFactory.getTileData(slicePositionParameter);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getMDSInfo",method = RequestMethod.POST)
+    MDSInfo getTileData(@RequestBody String path) {
+        LOGGER.info("request getMDSInfo service: request:{}", path);
+        return mdsFileFactory.getMDSInfo(path);
     }
 }

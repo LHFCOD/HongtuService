@@ -122,7 +122,7 @@ public class MDSFile {
         }
     }
 
-    public void acquireMinLevelImage() {
+    private void acquireMinLevelImage() {
         LayerProperty minLevelLayerProperty = layerPropertyMap.get(minLevel);
         try {
             minLevelImage = new BufferedImage(minLevelLayerProperty.getWidth(), minLevelLayerProperty.getHeight(), BufferedImage.TYPE_INT_BGR);
@@ -225,6 +225,18 @@ public class MDSFile {
 
     public int getCellHeight() {
         return cellHeight;
+    }
+
+    public int getLayerCount() {
+        return layerCount;
+    }
+
+    public int getMaxLevel() {
+        return maxLevel;
+    }
+
+    public int getMinLevel() {
+        return minLevel;
     }
 
 }

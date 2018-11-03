@@ -3,6 +3,7 @@ package com.hongtu.slice.component;
 import com.google.common.base.Throwables;
 import com.google.common.hash.HashCode;
 import com.google.common.hash.Hashing;
+import com.hongtu.slice.util.MDSInfo;
 import com.hongtu.slice.util.SlicePositionParameter;
 import com.hongtu.slice.util.MDSFile;
 import org.slf4j.Logger;
@@ -21,6 +22,7 @@ public class MDSFileFactory {
     private Properties props;
     private GuanvaCacheGetter mdsFileCache;
     private GuanvaCacheGetter sliceCache;
+
     public void initConfig() {
         props = new Properties();
         try {
@@ -58,6 +60,22 @@ public class MDSFileFactory {
             }
         }
         return data;
+    }
+
+    public MDSInfo getMDSInfo(String path) {
+        MDSInfo mdsInfo=null;
+        MDSFile mdsFile = generateMDSFile(path);
+        if (mdsFile != null) {
+             mdsInfo = new MDSInfo();
+             mdsInfo.setCellHeight(mdsFile.getCellHeight());
+             mdsInfo.setCellWidth(mdsFile.getCellWidth());
+             mdsInfo.setHeight(mdsFile.getHeight());
+             mdsInfo.setWidth(mdsFile.getWidth());
+             mdsInfo.setLayerCount(mdsFile.getLayerCount());
+             mdsInfo.setMaxLevel(mdsFile.getMaxLevel());
+             mdsInfo.setMinLevel(mdsFile.getMinLevel());
+        }
+        return mdsInfo;
     }
 
     public MDSFileFactory() {
