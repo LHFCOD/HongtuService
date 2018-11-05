@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
+@CrossOrigin
 public class ImageAnalysisController {
     @Autowired
     MDSFileFactory mdsFileFactory;
@@ -36,6 +37,6 @@ public class ImageAnalysisController {
     @RequestMapping(value = "/getMDSInfo",method = RequestMethod.POST)
     MDSInfo getTileData(@RequestBody String path) {
         LOGGER.info("request getMDSInfo service: request:{}", path);
-        return mdsFileFactory.getMDSInfo(path);
+        return mdsFileFactory.getMDSInfo(path.trim());
     }
 }
