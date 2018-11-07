@@ -8,6 +8,7 @@ import com.hongtu.slice.util.SlicePositionParameter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -27,15 +28,16 @@ public class ImageAnalysisController {
         return a + b;
     }
     @ResponseBody
-    @RequestMapping(value = "/getTileData",method = RequestMethod.POST)
-    byte[] getTileData(@RequestBody SlicePositionParameter slicePositionParameter) {
+    @RequestMapping(value = "/getTileData",method = RequestMethod.POST,produces = MediaType.IMAGE_JPEG_VALUE)
+    ResponseEntity<byte[]> getTileData(@RequestBody SlicePositionParameter slicePositionParameter) {
         LOGGER.info("request handleSlicePositionParameter service: request:{}", slicePositionParameter.toString());
-        return mdsFileFactory.getTileData(slicePositionParameter);
+        byte[] bytes= mdsFileFactory.getTileData(slicePositionParameter);
+        return  ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(bytes);
     }
 
     @ResponseBody
     @RequestMapping(value = "/getMDSInfo",method = RequestMethod.POST)
-    MDSInfo getTileData(@RequestBody String path) {
+    MDSInfo getMDSInfo(@RequestBody String path) {
         LOGGER.info("request getMDSInfo service: request:{}", path);
         return mdsFileFactory.getMDSInfo(path.trim());
     }
