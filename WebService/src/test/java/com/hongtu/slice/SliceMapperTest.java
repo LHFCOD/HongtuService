@@ -1,6 +1,8 @@
 package com.hongtu.slice;
 
+import com.hongtu.slice.db.entity.TbCatalog;
 import com.hongtu.slice.db.entity.TbSlice;
+import com.hongtu.slice.db.mapper.CatalogMapper;
 import com.hongtu.slice.db.mapper.SliceMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,10 +17,13 @@ import java.util.List;
 public class SliceMapperTest {
     @Autowired
     private SliceMapper sliceMapper;
+    @Autowired
+    private CatalogMapper catalogMapper;
 
     @Test
     public void testSelect(){
         List<TbSlice> sliceList=sliceMapper.getAll();
+        List<TbCatalog> catalogList=catalogMapper.selectCatalogByID(1000);
         int i=0;
     }
 }
