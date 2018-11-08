@@ -4,7 +4,7 @@ import com.google.common.base.Throwables;
 import com.google.common.hash.HashCode;
 import com.google.common.hash.Hashing;
 import com.hongtu.slice.util.MDSInfo;
-import com.hongtu.slice.util.SlicePositionParameter;
+import com.hongtu.slice.util.SliceParameter;
 import com.hongtu.slice.util.MDSFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,15 +44,15 @@ public class MDSFileFactory {
         return mdsFile;
     }
 
-    public byte[] getTileData(SlicePositionParameter SlicePositionParameter) {
+    public byte[] getTileData(SliceParameter sliceParameter) {
         byte[] data = null;
-        HashCode code = Hashing.md5().hashString(SlicePositionParameter.toString(), Charset.defaultCharset());
+        HashCode code = Hashing.md5().hashString(sliceParameter.toString(), Charset.defaultCharset());
         if (sliceCache != null) {
             data = (byte[]) sliceCache.get(code);
             if (data == null) {
-                MDSFile mdsFile = generateMDSFile(SlicePositionParameter.getPath());
+                MDSFile mdsFile = generateMDSFile(sliceParameter.getPath());
                 if (mdsFile != null) {
-                    data = mdsFile.getTileData(SlicePositionParameter.getLevel(), SlicePositionParameter.getX(), SlicePositionParameter.getY());
+                    data = mdsFile.getTileData(sliceParameter.getLevel(), sliceParameter.getX(), sliceParameter.getY());
                     if (data != null) {
                         sliceCache.set(code, data);
                     }
@@ -62,20 +62,45 @@ public class MDSFileFactory {
         return data;
     }
 
-    public MDSInfo getMDSInfo(String path) {
-        MDSInfo mdsInfo=null;
-        MDSFile mdsFile = generateMDSFile(path);
-        if (mdsFile != null) {
-             mdsInfo = new MDSInfo();
-             mdsInfo.setCellHeight(mdsFile.getCellHeight());
-             mdsInfo.setCellWidth(mdsFile.getCellWidth());
-             mdsInfo.setHeight(mdsFile.getHeight());
-             mdsInfo.setWidth(mdsFile.getWidth());
-             mdsInfo.setLayerCount(mdsFile.getLayerCount());
-             mdsInfo.setMaxLevel(mdsFile.getMaxLevel());
-             mdsInfo.setMinLevel(mdsFile.getMinLevel());
+    public MDSInfo getMDSInfo(SliceParameter sliceParameter) {
+        MDSInfo mdsInfo = null;
+        HashCode code = Hashing.md5().hashString(sliceParameter.toString(), Charset.defaultCharset());
+        if (mdsFileCache != null) {
+            mdsInfo = (MDSInfo) mdsFileCache.get(code);
+            if (mdsInfo == null) {
+                MDSFile mdsFile = generateMDSFile(sliceParameter.getPath());
+                if (mdsFile != null) {
+                    mdsInfo = new MDSInfo();
+                    mdsInfo.setCellHeight(mdsFile.getCellHeight());
+                    mdsInfo.setCellWidth(mdsFile.getCellWidth());
+                    mdsInfo.setHeight(mdsFile.getHeight());
+                    mdsInfo.setWidth(mdsFile.getWidth());
+                    mdsInfo.setLayerCount(mdsFile.getLayerCount());
+                    mdsInfo.setMaxLevel(mdsFile.getMaxLevel());
+                    mdsInfo.setMinLevel(mdsFile.getMinLevel());
+                    mdsFileCache.set(code,mdsInfo);
+                }
+            }
         }
         return mdsInfo;
+    }
+
+    public byte[] getThumbnail(SliceParameter sliceParameter) {
+        byte[] data = null;
+        HashCode code = Hashing.md5().hashString(sliceParameter.toString(), Charset.defaultCharset());
+        if (mdsFileCache != null) {
+            data = (byte[]) mdsFileCache.get(code);
+            if (data == null) {
+                MDSFile mdsFile = generateMDSFile(sliceParameter.getPath());
+                if (mdsFile != null) {
+                    data=mdsFile.getThumbnail(sliceParameter.getThumbnailWidth());
+                    if(data!=null){
+                        mdsFileCache.set(code,data);
+                    }
+                }
+            }
+        }
+        return data;
     }
 
     public MDSFileFactory() {

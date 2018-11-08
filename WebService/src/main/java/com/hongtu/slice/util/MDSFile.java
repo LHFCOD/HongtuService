@@ -211,6 +211,23 @@ public class MDSFile {
         return result;
     }
 
+    public byte[] getThumbnail(int width) {
+        byte[] data = null;
+        LayerProperty minLevelLayerProperty=layerPropertyMap.get(minLevel);
+        BufferedImage clipImage=minLevelImage.getSubimage(0,0,minLevelLayerProperty.getCurrentWidth(),minLevelLayerProperty.getCurrentHeight());
+        double resizeTimes = (1.0 * width) / minLevelLayerProperty.getCurrentWidth();
+        BufferedImage bufferedImage = zoomImage(clipImage, resizeTimes);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        try {
+            ImageIO.write(bufferedImage, "jpg", byteArrayOutputStream);
+            data = byteArrayOutputStream.toByteArray();
+        }
+        catch (Exception ex){
+            LOGGER.error("getThumbnail faild :{}", Throwables.getStackTraceAsString(ex));
+        }
+        return data;
+    }
+
     public int getWidth() {
         return width;
     }

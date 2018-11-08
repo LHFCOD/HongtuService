@@ -1,18 +1,19 @@
 package com.hongtu.slice.util;
 
-public class SlicePositionParameter {
+public class SliceParameter {
     private int level;
     private int x;
     private int y;
     private String path;
+    private int thumbnailWidth;
 
-    public SlicePositionParameter(String path,int level, int x, int y) {
+    public SliceParameter(String path,int level, int x, int y) {
         this.path = path;
         this.level=level;
         this.x=x;
         this.y=y;
     }
-    public SlicePositionParameter(){}
+    public SliceParameter(){}
     public int getLevel() {
         return level;
     }
@@ -47,5 +48,13 @@ public class SlicePositionParameter {
     @Override
     public String toString(){
         return String.format("path:%s,level:%d,x:%d,y:%d",path,level,x,y);
+    }
+
+    public int getThumbnailWidth() {
+        return thumbnailWidth;
+    }
+
+    public void setThumbnailWidth(int thumbnailWidth) {
+        this.thumbnailWidth = thumbnailWidth;
     }
 }

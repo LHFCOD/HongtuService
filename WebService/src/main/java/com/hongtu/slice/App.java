@@ -11,13 +11,7 @@ import javax.annotation.PostConstruct;
 @SpringBootApplication
 public class App {
     private static Logger LOGGER = LoggerFactory.getLogger(App.class);
-
     public static void main(String[] args) {
         SpringApplication.run(App.class, args);
-    }
-
-    @PostConstruct
-    void init() {
-        LOGGER.error("```````````````````````~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
     }
 }
