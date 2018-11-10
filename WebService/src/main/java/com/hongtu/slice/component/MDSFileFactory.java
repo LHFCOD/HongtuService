@@ -3,11 +3,13 @@ package com.hongtu.slice.component;
 import com.google.common.base.Throwables;
 import com.google.common.hash.HashCode;
 import com.google.common.hash.Hashing;
+import com.hongtu.slice.config.Configuration;
 import com.hongtu.slice.util.MDSInfo;
 import com.hongtu.slice.util.SliceParameter;
 import com.hongtu.slice.util.MDSFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.Charset;
@@ -18,26 +20,18 @@ import java.util.Properties;
 @Service
 public class MDSFileFactory {
     private Logger LOGGER = LoggerFactory.getLogger(MDSFileFactory.class);
-    private final String SETTINGS_PROPERTIES = "settings.properties";
-    private Properties props;
+
+    private Configuration configuration;
     private GuanvaCacheGetter mdsFileCache;
     private GuanvaCacheGetter sliceCache;
 
-    public void initConfig() {
-        props = new Properties();
-        try {
-            props.load(this.getClass().getClassLoader().getResourceAsStream(SETTINGS_PROPERTIES));
-        } catch (Exception ex) {
-            LOGGER.error("init config failed : {}", Throwables.getStackTraceAsString(ex));
-        }
-    }
 
     public MDSFile generateMDSFile(String fileName) {
         MDSFile mdsFile = null;
         if (mdsFileCache != null)
             mdsFile = (MDSFile) mdsFileCache.get(fileName);
         if (mdsFile == null) {
-            mdsFile = new MDSFile(props);
+            mdsFile = new MDSFile(configuration.getMDSFileProperties());
             mdsFile.init(fileName);
             mdsFileCache.set(fileName, mdsFile);
         }
@@ -78,7 +72,7 @@ public class MDSFileFactory {
                     mdsInfo.setLayerCount(mdsFile.getLayerCount());
                     mdsInfo.setMaxLevel(mdsFile.getMaxLevel());
                     mdsInfo.setMinLevel(mdsFile.getMinLevel());
-                    mdsFileCache.set(code,mdsInfo);
+                    mdsFileCache.set(code, mdsInfo);
                 }
             }
         }
@@ -93,9 +87,9 @@ public class MDSFileFactory {
             if (data == null) {
                 MDSFile mdsFile = generateMDSFile(sliceParameter.getPath());
                 if (mdsFile != null) {
-                    data=mdsFile.getThumbnail(sliceParameter.getThumbnailWidth());
-                    if(data!=null){
-                        mdsFileCache.set(code,data);
+                    data = mdsFile.getThumbnail(sliceParameter.getThumbnailWidth());
+                    if (data != null) {
+                        mdsFileCache.set(code, data);
                     }
                 }
             }
@@ -103,9 +97,10 @@ public class MDSFileFactory {
         return data;
     }
 
-    public MDSFileFactory() {
-        initConfig();
-        mdsFileCache = new GuanvaCacheGetter(props);
-        sliceCache = new GuanvaCacheGetter(props);
+    @Autowired
+    public MDSFileFactory(Configuration configuration) {
+        this.configuration = configuration;
+        mdsFileCache = new GuanvaCacheGetter(configuration.getMDSFileCacheProperties());
+        sliceCache = new GuanvaCacheGetter(configuration.getSliceCacheProperties());
     }
 }

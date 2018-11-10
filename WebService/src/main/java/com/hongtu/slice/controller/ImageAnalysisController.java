@@ -1,14 +1,9 @@
 package com.hongtu.slice.controller;
 
-import com.google.common.base.Throwables;
 import com.hongtu.slice.component.MDSFileFactory;
-import com.hongtu.slice.db.entity.TbCatalog;
-import com.hongtu.slice.db.mapper.CatalogMapper;
-import com.hongtu.slice.util.Add;
+import com.hongtu.slice.db.util.DatabaseIO;
 import com.hongtu.slice.util.MDSInfo;
 import com.hongtu.slice.util.SliceParameter;
-import org.apache.ibatis.annotations.Param;
-import org.hibernate.validator.constraints.CodePointLength;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,13 +12,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @Controller
 @CrossOrigin
 public class ImageAnalysisController {
     @Autowired
     MDSFileFactory mdsFileFactory;
+    @Autowired
+    DatabaseIO databaseIO;
 
     private Logger LOGGER = LoggerFactory.getLogger(ImageAnalysisController.class);
 
@@ -40,7 +35,7 @@ public class ImageAnalysisController {
                                        @RequestParam("x") Integer x,
                                        @RequestParam("y") Integer y) {
         SliceParameter sliceParameter = new SliceParameter();
-        sliceParameter.setPath(getSlicePathByID(id));
+        sliceParameter.setPath(databaseIO.getSlicePathByID(id));
         sliceParameter.setLevel(level);
         sliceParameter.setX(x);
         sliceParameter.setY(y);
@@ -49,10 +44,11 @@ public class ImageAnalysisController {
         return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(bytes);
     }
 
+    @ResponseBody
     @GetMapping(value = "/getMDSInfo")
     MDSInfo getMDSInfo(@RequestParam("id") Integer id) {
         SliceParameter sliceParameter = new SliceParameter();
-        sliceParameter.setPath(getSlicePathByID(id));
+        sliceParameter.setPath(databaseIO.getSlicePathByID(id));
         LOGGER.info("request getMDSInfo service: request:{}", sliceParameter.toString());
         return mdsFileFactory.getMDSInfo(sliceParameter);
     }
@@ -61,25 +57,10 @@ public class ImageAnalysisController {
     ResponseEntity<byte[]> getThumbnail(@RequestParam("id") Integer id,
                                         @RequestParam("thumbnailWidth") Integer thumbnailWidth) {
         SliceParameter sliceParameter = new SliceParameter();
-        sliceParameter.setPath(getSlicePathByID(id));
+        sliceParameter.setPath(databaseIO.getSlicePathByID(id));
         sliceParameter.setThumbnailWidth(thumbnailWidth);
         LOGGER.info("request getThumbnail service: request:{}", sliceParameter.toString());
         byte[] bytes = mdsFileFactory.getThumbnail(sliceParameter);
         return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(bytes);
     }
-
-    @Autowired
-    private CatalogMapper catalogMapper;
-
-    String getSlicePathByID(int id) {
-        List<TbCatalog> catalogList = catalogMapper.selectCatalogByID(id);
-        String path = null;
-        if (catalogList.size() == 1) {
-            path = String.format("/root/slice/subject/%s/%d.mds",catalogList.get(0).getIdcode(),id);
-        } else {
-            LOGGER.error("getSlicePathByID failed !");
-        }
-        return path;
-    }
-
 }

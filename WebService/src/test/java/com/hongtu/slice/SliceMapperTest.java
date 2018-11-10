@@ -4,6 +4,7 @@ import com.hongtu.slice.db.entity.TbCatalog;
 import com.hongtu.slice.db.entity.TbSlice;
 import com.hongtu.slice.db.mapper.CatalogMapper;
 import com.hongtu.slice.db.mapper.SliceMapper;
+import com.hongtu.slice.db.util.DatabaseIO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,14 +17,12 @@ import java.util.List;
 @SpringBootTest(classes = App.class)
 public class SliceMapperTest {
     @Autowired
-    private SliceMapper sliceMapper;
-    @Autowired
-    private CatalogMapper catalogMapper;
+    DatabaseIO databaseIO;
 
     @Test
-    public void testSelect(){
-        List<TbSlice> sliceList=sliceMapper.getAll();
-        List<TbCatalog> catalogList=catalogMapper.selectCatalogByID(1000);
-        int i=0;
+    public void testSelect() {
+        String path=databaseIO.getSlicePathByID(1122);
+        String path1=databaseIO.getSlicePathByID(1122);
+        int i = 0;
     }
 }
