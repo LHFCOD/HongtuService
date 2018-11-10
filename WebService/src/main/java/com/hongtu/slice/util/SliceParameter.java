@@ -47,7 +47,7 @@ public class SliceParameter {
     }
     @Override
     public String toString(){
-        return String.format("path:%s,level:%d,x:%d,y:%d",path,level,x,y);
+        return String.format("path:%s,level:%d,x:%d,y:%d,thumbnailWidth:%d",path,level,x,y,thumbnailWidth);
     }
 
     public int getThumbnailWidth() {

@@ -75,7 +75,7 @@ public class ImageAnalysisController {
         List<TbCatalog> catalogList = catalogMapper.selectCatalogByID(id);
         String path = null;
         if (catalogList.size() == 1) {
-            path = "/root/slice/subject/" + catalogList.get(0).getIdcode();
+            path = String.format("/root/slice/subject/%s/%d.mds",catalogList.get(0).getIdcode(),id);
         } else {
             LOGGER.error("getSlicePathByID failed !");
         }
