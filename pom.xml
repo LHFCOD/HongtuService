@@ -11,6 +11,7 @@
     <modules>
         <module>WebService</module>
         <module>SliceCore</module>
+        <module>SliceDB</module>
     </modules>
     <dependencyManagement>
         <dependencies>

@@ -1,9 +1,5 @@
 package com.hongtu.slice;
 
-import com.hongtu.slice.db.entity.TbCatalog;
-import com.hongtu.slice.db.entity.TbSlice;
-import com.hongtu.slice.db.mapper.CatalogMapper;
-import com.hongtu.slice.db.mapper.SliceMapper;
 import com.hongtu.slice.db.util.DatabaseIO;
 import org.junit.Test;
 import org.junit.runner.RunWith;

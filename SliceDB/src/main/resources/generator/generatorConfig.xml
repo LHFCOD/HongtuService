@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<!--
+  生成代码语句
+  mvn -Dmybatis.generator.overwrite=true mybatis-generator:generate -e
+-->
+<generatorConfiguration>
+    <properties resource="${spring.profiles.active}.properties"></properties>
+    <context id="DB2Tables" targetRuntime="MyBatis3">
+        <commentGenerator>
+            <property name="suppressDate" value="true"/>
+            <property name="suppressAllComments" value="false"/>
+        </commentGenerator>
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="${jdbc.url}"
+                        userId="${jdbc.username}" password="${jdbc.password}">
+        </jdbcConnection>
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+        <javaModelGenerator targetPackage="com.hongtu.slice.db.entity"
+                            targetProject="src/main/java">
+            <property name="enableSubPackages" value="true"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <!--&lt;!&ndash; 生成映射文件的包名和位置 &ndash;&gt;-->
+        <!--<sqlMapGenerator targetPackage="com.hongtu.slice.db.dao.generated" targetProject="src/main/java">-->
+            <!--<property name="enableSubPackages" value="true"/>-->
+        <!--</sqlMapGenerator>-->
+
+        <!--<javaClientGenerator type="ANNOTATEDMAPPER"-->
+                             <!--targetPackage="com.hongtu.slice.db.generated"-->
+                             <!--targetProject="src/main/java">-->
+            <!--<property name="enableSubPackages" value="true"/>-->
+        <!--</javaClientGenerator>-->
+        <table tableName="tb_catalog" domainObjectName="TbCatalog" enableCountByExample="false"
+               enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+        <table tableName="tb_slice" domainObjectName="TbSlice" enableCountByExample="false"
+               enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+    </context>
+</generatorConfiguration>
